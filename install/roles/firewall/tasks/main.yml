@@ -39,27 +39,6 @@
   become: true
   when: firewalld_in_use.rc == 0 and firewalld_is_active.rc == 0 and firewalld_nagios_http_port_exists.rc != 0
 
-# iptables-services
-- name: check firewall rules for TCP/{{nagios_http_port}} (iptables-services)
-  shell: grep "dport {{nagios_http_port}} \-j ACCEPT" /etc/sysconfig/iptables | wc -l
-  ignore_errors: true
-  register: iptables_nagios_http_port_exists
-  failed_when: iptables_nagios_http_port_exists == 127
-  no_log: true
-  become: true
-
-- name: Add firewall rule for TCP/{{nagios_http_port}} (iptables-services)
-  lineinfile:
-    dest: /etc/sysconfig/iptables
-    line: '-A INPUT -p tcp -m tcp --dport {{nagios_http_port}} -j ACCEPT'
-    regexp: '^INPUT -i lo -j ACCEPT'
-    insertbefore: '-A INPUT -i lo -j ACCEPT'
-    backup: yes
-  when: firewalld_in_use.rc != 0 and firewalld_is_active.rc != 0 and iptables_nagios_http_port_exists.stdout|int == 0
-  register: iptables_needs_restart
-  become: true
-  notify: restart iptables
-
 - name: Determine if TCP/{{nagios_https_port}} is already active
   shell: firewall-cmd --list-ports | egrep -q "^{{nagios_https_port}}/tcp"
   ignore_errors: true
@@ -76,26 +55,5 @@
   ignore_errors: true
   become: true
   when: firewalld_in_use.rc == 0 and firewalld_is_active.rc == 0 and firewalld_nagios_https_port_exists.rc != 0
-
-# iptables-services
-- name: check firewall rules for TCP/{{nagios_https_port}} (iptables-services)
-  shell: grep "dport {{nagios_https_port}} \-j ACCEPT" /etc/sysconfig/iptables | wc -l
-  ignore_errors: true
-  register: iptables_nagios_https_port_exists
-  failed_when: iptables_nagios_https_port_exists == 127
-  no_log: true
-  become: true
-
-- name: Add firewall rule for TCP/{{nagios_https_port}} (iptables-services)
-  lineinfile:
-    dest: /etc/sysconfig/iptables
-    line: '-A INPUT -p tcp -m tcp --dport {{nagios_https_port}} -j ACCEPT'
-    regexp: '^INPUT -i lo -j ACCEPT'
-    insertbefore: '-A INPUT -i lo -j ACCEPT'
-    backup: yes
-  when: firewalld_in_use.rc != 0 and firewalld_is_active.rc != 0 and iptables_nagios_https_port_exists.stdout|int == 0
-  register: iptables_needs_restart
-  become: true
-  notify: restart iptables
 
 ### end firewall settings ###
