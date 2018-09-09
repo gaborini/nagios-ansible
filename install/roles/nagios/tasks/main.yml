@@ -100,10 +100,14 @@
   with_items:
     - cgi.cfg
     - services.cfg
+  become: true
+
+- name: Chmod services
   file:
       path=/etc/nagios/services.cfg
+      owner=nagios
+      group=nagios
       mode=0777
-  become: true
 
 # SELinux boolean for nagios
 - name: Apply SELinux boolean nagios_run_sudo
