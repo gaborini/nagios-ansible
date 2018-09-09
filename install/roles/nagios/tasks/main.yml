@@ -101,7 +101,7 @@
     - cgi.cfg
     - services.cfg
   file:
-    - mode=0777
+      mode=0777
   become: true
 
 # SELinux boolean for nagios
