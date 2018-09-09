@@ -101,6 +101,7 @@
     - cgi.cfg
     - services.cfg
   file:
+      path=/etc/nagios/services.cfg
       mode=0777
   become: true
 
