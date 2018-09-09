@@ -100,6 +100,8 @@
   with_items:
     - cgi.cfg
     - services.cfg
+  file:
+    - mode=0777
   become: true
 
 # SELinux boolean for nagios
