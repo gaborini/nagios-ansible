@@ -31,13 +31,3 @@ critical_proc: 1000
 # threshold for # of logged in users
 warning_users: 15
 critical_users: 30
-
-### services ports ###
-# jenkins
-jenkins_port: 8080
-# set to true if you use a reverse proxy
-# like nginx for jenkins
-jenkins_uses_proxy: true
-# username/pass for reverse proxy auth
-jenkins_user: jenkinsadmin
-jenkins_pass: jenkinspass
