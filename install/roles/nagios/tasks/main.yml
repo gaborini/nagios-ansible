@@ -102,13 +102,6 @@
     - services.cfg
   become: true
 
-- name: Chmod services
-  file:
-      path=/etc/nagios/services.cfg
-      owner=nagios
-      group=nagios
-      mode=0777
-
 # SELinux boolean for nagios
 - name: Apply SELinux boolean nagios_run_sudo
   seboolean: name=nagios_run_sudo state=yes persistent=yes
